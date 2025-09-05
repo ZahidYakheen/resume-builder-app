@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Create Professional Resumes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-brand">
+                    <h2>ResumeBuilder</h2>
+                </div>
+                <div class="nav-actions" id="navActions">
+                    <button class="btn btn--outline" id="loginBtn">Log In</button>
+                    <button class="btn btn--primary" id="signupBtn">Sign Up</button>
+                </div>
+                <div class="nav-user hidden" id="navUser">
+                    <span id="userName"></span>
+                    <button class="btn btn--outline" id="logoutBtn">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div id="landingPage" class="page">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Free Online Resume Builder</h1>
+                    <p class="hero-subtitle">Create a professional resume that stands out. Choose from modern templates and download instantly.</p>
+                    <button class="btn btn--primary btn--lg" id="buildResumeBtn">Build My Resume</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✏️</div>
+                        <h3 class="feature-title">Easy drag-and-drop editor</h3>
+                        <p class="feature-description">Create your resume with our intuitive interface</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3 class="feature-title">Professional templates</h3>
+                        <p class="feature-description">Choose from modern, ATS-friendly designs</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📥</div>
+                        <h3 class="feature-title">PDF download</h3>
+                        <p class="feature-description">Download your resume as a high-quality PDF</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <h3 class="feature-title">Save & edit anytime</h3>
+                        <p class="feature-description">Your resumes are saved and accessible anywhere</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="page auth-page hidden">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2 class="auth-title">Welcome back</h2>
+                <p class="auth-subtitle">Sign in to your account</p>
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="switchToSignup">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signupPage" class="page auth-page hidden">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2 class="auth-title">Create your account</h2>
+                <p class="auth-subtitle">Start building your professional resume</p>
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="signupPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Create Account</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardPage" class="page hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>My Resumes</h1>
+                <button class="btn btn--primary" id="createResumeBtn">Create New Resume</button>
+            </div>
+            <div class="dashboard-content">
+                <div id="resumesList" class="resumes-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Builder -->
+    <div id="builderPage" class="page hidden">
+        <div class="builder-container">
+            <div class="builder-sidebar">
+                <div class="builder-header">
+                    <button class="btn btn--outline" id="backToDashboard">← Back</button>
+                    <div class="builder-actions">
+                        <button class="btn btn--outline" id="saveResumeBtn">Save</button>
+                        <button class="btn btn--primary" id="exportPdfBtn">Download PDF</button>
+                    </div>
+                </div>
+                
+                <div class="builder-tabs">
+                    <button class="tab-btn active" data-tab="personal">Personal Info</button>
+                    <button class="tab-btn" data-tab="summary">Summary</button>
+                    <button class="tab-btn" data-tab="experience">Experience</button>
+                    <button class="tab-btn" data-tab="education">Education</button>
+                    <button class="tab-btn" data-tab="skills">Skills</button>
+                    <button class="tab-btn" data-tab="projects">Projects</button>
+                </div>
+
+                <div class="builder-forms">
+                    <!-- Personal Info Tab -->
+                    <div id="personalTab" class="tab-content active">
+                        <h3>Personal Information</h3>
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LinkedIn</label>
+                            <input type="text" class="form-control" id="linkedin">
+                        </div>
+                    </div>
+
+                    <!-- Summary Tab -->
+                    <div id="summaryTab" class="tab-content">
+                        <h3>Professional Summary</h3>
+                        <div class="form-group">
+                            <label class="form-label">Summary</label>
+                            <textarea class="form-control" id="summary" rows="6" placeholder="Write a brief summary of your professional background and key achievements..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Experience Tab -->
+                    <div id="experienceTab" class="tab-content">
+                        <h3>Work Experience</h3>
+                        <div id="experienceList"></div>
+                        <button class="btn btn--outline btn--full-width" id="addExperienceBtn">+ Add Experience</button>
+                    </div>
+
+                    <!-- Education Tab -->
+                    <div id="educationTab" class="tab-content">
+                        <h3>Education</h3>
+                        <div id="educationList"></div>
+                        <button class="btn btn--outline btn--full-width" id="addEducationBtn">+ Add Education</button>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skillsTab" class="tab-content">
+                        <h3>Skills</h3>
+                        <div id="skillsList"></div>
+                        <button class="btn btn--outline btn--full-width" id="addSkillBtn">+ Add Skill</button>
+                    </div>
+
+                    <!-- Projects Tab -->
+                    <div id="projectsTab" class="tab-content">
+                        <h3>Projects</h3>
+                        <div id="projectsList"></div>
+                        <button class="btn btn--outline btn--full-width" id="addProjectBtn">+ Add Project</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="builder-preview">
+                <div class="preview-header">
+                    <h3>Preview</h3>
+                    <select class="form-control template-selector" id="templateSelector">
+                        <option value="classic">Classic Professional</option>
+                        <option value="modern">Modern Design</option>
+                    </select>
+                </div>
+                <div class="preview-container">
+                    <div id="resumePreview" class="resume-preview classic-template"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
